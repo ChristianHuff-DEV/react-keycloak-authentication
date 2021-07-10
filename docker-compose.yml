@@ -6,7 +6,6 @@ services:
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      # This is needed so that it works using gitpod.io
       PROXY_ADDRESS_FORWARDING: "true"
     ports:
       - 8180:8080
