@@ -12,7 +12,7 @@ function App() {
 	}
 	// If the user is authenticated display the home component
 	else {
-		return <Home/>
+		return <Home />
 	}
 }
 
