@@ -1,8 +1,11 @@
-import Home from "./components/Home";
+import AuthContextProvider from "./context/AuthContextProvider";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   return (
-    <Home/>
+    <AuthContextProvider>
+      <LoadingSpinner />
+    </AuthContextProvider>
   );
 }
 
