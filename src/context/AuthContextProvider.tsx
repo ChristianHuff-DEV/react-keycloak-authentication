@@ -19,13 +19,15 @@ const keycloak = Keycloak(keycloakConfig);
 interface AuthContextValues {
 	isAuthenticated: boolean;
 	username: string;
-	logout: Function;
+	logout: () => void;
+	hasRole: (role: string) => boolean;
 }
 
 const defaultAuthContextValues: AuthContextValues = {
 	isAuthenticated: false,
 	username: "",
 	logout: () => { },
+	hasRole: (role) => false,
 };
 
 /**
@@ -111,8 +113,12 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
 		keycloak.logout();
 	};
 
+	const hasRole = (role: string) => {
+		return keycloak.hasRealmRole(role);
+	}
+
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, username, logout }}>
+		<AuthContext.Provider value={{ isAuthenticated, username, logout, hasRole }}>
 			{props.children}
 		</AuthContext.Provider>
 	);
