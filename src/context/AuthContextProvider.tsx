@@ -78,7 +78,9 @@ interface AuthContextProviderProps {
 const AuthContextProvider = (props: AuthContextProviderProps) => {
   console.log("rendering AuthContextProvider");
 
+  // Create the local state in which we will keep track if a user is authenticated
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
+  // Local state that will contain the users name once it is loaded
   const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
