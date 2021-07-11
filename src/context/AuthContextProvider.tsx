@@ -1,28 +1,51 @@
 import Keycloak, { KeycloakConfig, KeycloakInitOptions } from "keycloak-js";
 import { createContext, useEffect, useState } from "react";
 
+/**
+ * KeycloakConfig configures the connection to the Keycloak server.
+ */
 const keycloakConfig: KeycloakConfig = {
   realm: "react-example",
   clientId: "webapp",
   url: "http://localhost:8180/auth",
 };
 
+/**
+ * KeycloakInitOptions configures the Keycloak client.
+ */
 const keycloakInitOptions: KeycloakInitOptions = {
+  // Configure that Keycloak will check if a user is already authenticated (when opening the app or reloading the page). If not authenticated the user will be send to the login form. If already authenticated the webapp will open.
   onLoad: "login-required",
 };
 
+// Create the Keycloak client instance
 const keycloak = Keycloak(keycloakConfig);
 
 /**
  * AuthContextValues defines the structure for the default values of the {@link AuthContext}.
  */
 interface AuthContextValues {
+  /**
+   * Whether or not a user is currently authenticated
+   */
   isAuthenticated: boolean;
+  /**
+   * The name of the authenticated user
+   */
   username: string;
+  /**
+   * Function to initiate the logout
+   */
   logout: () => void;
+  /**
+   * Check if the user has the given role
+   */
   hasRole: (role: string) => boolean;
 }
 
+/**
+ * Default values for the {@link AuthContext}
+ */
 const defaultAuthContextValues: AuthContextValues = {
   isAuthenticated: false,
   username: "",
@@ -31,7 +54,7 @@ const defaultAuthContextValues: AuthContextValues = {
 };
 
 /**
- * AuthContext is the context exposed by the {@link AuthContextProvider}.
+ * Create the AuthContext using the default values.
  */
 export const AuthContext = createContext<AuthContextValues>(
   defaultAuthContextValues
