@@ -83,6 +83,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
   // Local state that will contain the users name once it is loaded
   const [username, setUsername] = useState<string>("");
 
+  // Effect used to initialize the Keycloak client. It has no dependencies so it is only rendered when the app is (re-)loaded.
   useEffect(() => {
     /**
      * Initialize the Keycloak instance
@@ -94,12 +95,14 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
           keycloakInitOptions
         );
 
+        // If the authentication was not successfull the user is send back to the Keycloak login form
         if (!isAuthenticatedResponse) {
           console.log(
             "user is not yet authenticated. forwarding user to login."
           );
           keycloak.login();
         }
+        // If we get here the user is authenticated and we can update the state accordingly
         console.log("user already authenticated");
         setAuthenticated(isAuthenticatedResponse);
       } catch {
@@ -111,6 +114,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
     initializeKeycloak();
   }, []);
 
+  // This effect loads the users profile in order to extract the username
   useEffect(() => {
     /**
      * Load the profile for of the user from Keycloak
@@ -134,14 +138,23 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
     }
   }, [isAuthenticated]);
 
+  /**
+   * Initiate the logout
+   */
   const logout = () => {
     keycloak.logout();
   };
 
+  /**
+   * Check if the user has the given role
+   * @param role to be checked
+   * @returns whether or not if the user has the role
+   */
   const hasRole = (role: string) => {
     return keycloak.hasRealmRole(role);
   };
 
+  // Setup the context provider
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, username, logout, hasRole }}

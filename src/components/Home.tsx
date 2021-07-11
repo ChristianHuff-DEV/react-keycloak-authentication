@@ -11,6 +11,7 @@ const Home = () => {
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
             Welcome {authContext.username}
           </h1>
+          {/* Show different content based on the roles the user has assigned. */}
           {authContext.hasRole("user") && <p>You are a user</p>}
           {authContext.hasRole("admin") && <p>You are a admin</p>}
           <button
